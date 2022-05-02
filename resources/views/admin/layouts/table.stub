@@ -1,0 +1,35 @@
+  <div class="card">
+        <div class="table-responsive">
+            <table class="table table-vcenter table-mobile-md card-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Title2</th>
+                        <th class="w-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="">
+                            <div class="d-flex py-1 align-items-center">
+                                <div class="flex-fill">
+                                    <div class="font-weight-medium">TITLE</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-label="Title">
+                            <div>Title2</div>
+                        </td>
+                        <td class="text-muted" data-label="Role"> User </td>
+                        <td>
+                            <div class="btn-list flex-nowrap">
+                                <a href="" class="btn btn-light btn-sm text-primary"><i class="fa fa-pencil"></i></a>
+                                <a href="" class="btn btn-light btn-sm text-primary"> <i class="fa fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
