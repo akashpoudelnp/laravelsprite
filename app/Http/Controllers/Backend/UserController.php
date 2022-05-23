@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use PDF;
 
 class UserController extends Controller
 {
@@ -36,12 +37,12 @@ class UserController extends Controller
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
         ]);
-
+        $new_password = $data['password'];
         $data['password'] = bcrypt($request->password);
 
         $user = User::create($data);
         $user->syncRoles($request->roles);
-        Mail::to($user)->send(new RegisteredUser($user));
+        Mail::to($user)->send(new RegisteredUser($user, $new_password));
         if ($request->save == 'rd')
             return redirect()->route('admin.users.index')
                 ->with('success', 'User Created Sucessfully');
@@ -93,5 +94,11 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User deleted Sucessfully !');
+    }
+    public function generatePdf()
+    {
+        $users = User::all();
+        $pdf = PDF::loadView('pdf.users', compact('users'));
+        return $pdf->stream('document.pdf');
     }
 }

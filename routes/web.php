@@ -25,4 +25,5 @@ Route::middleware('auth', 'permission:can_dashboard')->prefix('admin/')->name('a
     Route::resource('users', UserController::class)->middleware('permission:can_crud_users');
     Route::resource('roles', RolesController::class)->middleware('permission:can_crud_users');
     Route::resource('permissions', PermissionController::class)->middleware('permission:can_crud_users');
+    Route::get('/user/generatepdf', [UserController::class, 'generatePdf'])->name('users.generatepdf');
 });

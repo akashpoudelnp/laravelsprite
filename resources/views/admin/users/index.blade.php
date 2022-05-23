@@ -14,6 +14,7 @@
 @endsection
 @section('page_tools')
     <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Add New &nbsp; <i class="pl-2 fa fa-plus"></i></a>
+    <a href="{{ route('admin.users.generatepdf') }}" class="btn btn-success">Generate PDF &nbsp; <i class="pl-2 fa fa-file"></i></a>
 @endsection
 @section('content')
     <div class="card">

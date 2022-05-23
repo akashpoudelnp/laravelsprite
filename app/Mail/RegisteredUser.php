@@ -18,9 +18,11 @@ class RegisteredUser extends Mailable
      * @return void
      */
     public $user;
-    public function __construct(User $user)
+    public $new_password;
+    public function __construct(User $user, $new_password)
     {
         $this->user = $user;
+        $this->new_password = $new_password;
     }
 
     /**
