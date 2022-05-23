@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RegisteredMail;
+use App\Mail\RegisteredUser;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -38,7 +41,7 @@ class UserController extends Controller
 
         $user = User::create($data);
         $user->syncRoles($request->roles);
-
+        Mail::to($user)->send(new RegisteredUser($user));
         if ($request->save == 'rd')
             return redirect()->route('admin.users.index')
                 ->with('success', 'User Created Sucessfully');
