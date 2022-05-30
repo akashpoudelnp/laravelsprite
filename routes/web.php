@@ -29,4 +29,4 @@ Route::middleware('auth', 'permission:can_dashboard')->prefix('admin/')->name('a
     Route::get('/user/reset-password/{user}', [UserController::class, 'resetLink'])->name('users.reset-password');
 });
 Route::get('/user/reset-password/{token}', [UserController::class, 'resetPasswordView'])->name('users.reset-password-view');
-Route::post('/user/changepassword', [UserController::class, 'changePassword'])->name('users.changepassword');
+Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('users.change-password');

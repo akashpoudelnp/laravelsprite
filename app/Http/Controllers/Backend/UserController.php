@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
+use PDF;
+use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
 use App\Mail\RegisteredMail;
 use App\Mail\RegisteredUser;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use PDF;
 
 class UserController extends Controller
 {
@@ -105,7 +109,29 @@ class UserController extends Controller
     // send reset password link to user
     public function resetLink(User $user)
     {
-        $token = md5($user->email);
+        $token = rand(
+            100000,
+            999999
+        );
+        if (DB::table('password_resets')->where('token', $token)->exists()) {
+            $token = rand(
+                100000,
+                999999
+            );
+        }
+
+        if (DB::table('password_resets')->where('email', $user->email)->exists()) {
+            DB::table('password_resets')->where('email', $user->email)->update(['token' => $token]);
+        } else {
+            DB::table('password_resets')->insert(
+                [
+                    'email' => $user->email, 'token' => $token,
+                    'created_at' => now()
+                ]
+            );
+        }
+
+
         Mail::send('emails.resetpassword', ['user' => $user, 'token' => $token], function ($message) use ($user) {
             $message->to($user->email);
             $message->subject('Reset Password');
@@ -115,16 +141,34 @@ class UserController extends Controller
     }
     public function resetPasswordView($token)
     {
+
+        $data = DB::table('password_resets')->where('token', $token)->first();
+        // check if expired
+        if (!DB::table('password_resets')->where('token', $token)->exists()) {
+            Session::put('token_expired', 'The reset link is invalid or has expired.');
+            return view('resetpassword', compact('token'));
+        }
+        if (Carbon::parse($data->created_at)->addMinutes(config('app.password_reset_expiration'))->isPast()) {
+            DB::table('password_resets')->where('token', $token)->delete();
+            Session::put('token_expired', 'The reset link is expired');
+        } else {
+            Session::remove('token_expired');
+        }
         return view('resetpassword', compact('token'));
     }
     public function changePassword(Request $request)
     {
-        if (md5($request->email) == $request->token) {
+        if (DB::table('password_resets')->where('token', $request->user_token)->where('email', $request->email)->exists()) {
+            $reset = DB::table('password_resets')->where('token', $request->user_token)->where('email', $request->email)->first();
+            if (Carbon::parse($reset->created_at)->addMinutes(config('app.password_reset_expiration'))->isPast()) {
+
+                return redirect()->back()
+                    ->with('error', 'Reset Password Link Expired !');
+            }
             $user = User::where('email', $request->email)->first();
             $user->password = bcrypt($request->password);
             $user->update();
-
-
+            DB::table('password_resets')->where('token', $request->user_token)->where('email', $request->email)->delete();
             return view('password-resetted');
         } else {
 

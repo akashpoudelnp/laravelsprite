@@ -125,6 +125,9 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    // Password reset email expires after (In Minutes)
+    'password_reset_expiration' => 180,
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
