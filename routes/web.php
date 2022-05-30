@@ -26,4 +26,7 @@ Route::middleware('auth', 'permission:can_dashboard')->prefix('admin/')->name('a
     Route::resource('roles', RolesController::class)->middleware('permission:can_crud_users');
     Route::resource('permissions', PermissionController::class)->middleware('permission:can_crud_users');
     Route::get('/user/generatepdf', [UserController::class, 'generatePdf'])->name('users.generatepdf');
+    Route::get('/user/reset-password/{user}', [UserController::class, 'resetLink'])->name('users.reset-password');
 });
+Route::get('/user/reset-password/{token}', [UserController::class, 'resetPasswordView'])->name('users.reset-password-view');
+Route::post('/user/changepassword', [UserController::class, 'changePassword'])->name('users.changepassword');

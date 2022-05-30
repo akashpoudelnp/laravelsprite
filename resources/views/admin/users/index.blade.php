@@ -14,7 +14,8 @@
 @endsection
 @section('page_tools')
     <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Add New &nbsp; <i class="pl-2 fa fa-plus"></i></a>
-    <a href="{{ route('admin.users.generatepdf') }}" class="btn btn-success">Generate PDF &nbsp; <i class="pl-2 fa fa-file"></i></a>
+    <a href="{{ route('admin.users.generatepdf') }}" class="btn btn-success">Generate PDF &nbsp; <i
+            class="pl-2 fa fa-file"></i></a>
 @endsection
 @section('content')
     <div class="card">
@@ -54,6 +55,8 @@
                             </td>
                             <td>
                                 <div class="btn-list flex-nowrap">
+                                    <a href="{{ route('admin.users.reset-password', $user->id) }}"><i
+                                            class="fa fa-envelope"></i></a>
                                     <a href="{{ route('admin.users.edit', $user) }}"
                                         class="btn btn-light btn-sm text-primary"><i class="fa fa-pencil"></i></a>
 

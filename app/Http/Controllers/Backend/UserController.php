@@ -8,6 +8,7 @@ use App\Mail\RegisteredUser;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
@@ -100,5 +101,34 @@ class UserController extends Controller
         $users = User::all();
         $pdf = PDF::loadView('pdf.users', compact('users'));
         return $pdf->stream('document.pdf');
+    }
+    // send reset password link to user
+    public function resetLink(User $user)
+    {
+        $token = md5($user->email);
+        Mail::send('emails.resetpassword', ['user' => $user, 'token' => $token], function ($message) use ($user) {
+            $message->to($user->email);
+            $message->subject('Reset Password');
+        });
+        return redirect()->route('admin.users.index')
+            ->with('success', "Reset Password Link Sent to  $user->name !");
+    }
+    public function resetPasswordView($token)
+    {
+        return view('resetpassword', compact('token'));
+    }
+    public function changePassword(Request $request)
+    {
+        if (md5($request->email) == $request->token) {
+            $user = User::where('email', $request->email)->first();
+            $user->password = bcrypt($request->password);
+            $user->update();
+
+
+            return view('password-resetted');
+        } else {
+
+            return redirect()->back()->with('error', 'Cannot update password, an error has occured. Check your email or try again later.');
+        }
     }
 }
