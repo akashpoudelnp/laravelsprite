@@ -1,15 +1,19 @@
 <?php
 return [
-    'app_name' => 'Laravel Sprite',
+    'app_name' => 'AkDash Starter',
     'dashboard_url' => '/admin',
     'logo_image' => true,
-    'logo_url' => '/img/panel.png',
+    'logo_url' => '/img/logo-dark.png',
     'sidebar_links' => [
         [
             'name' => 'Home',
             'url' => '/admin',
             'icon' => 'tabler-home',
             'is' => 'admin'
+        ],
+        [
+            'header' => 'Authentication',
+            'icon' => 'tabler-key',
         ],
         [
             'name' => 'Users',
@@ -64,6 +68,52 @@ return [
                     'is' => 'admin/permissions/create'
                 ],
             ],
-        ]
+        ],
+        [
+            'name' => 'Posts',
+            'url' => '/admin/posts',
+            'icon' => 'tabler-news',
+            'is' => 'admin/posts*',
+            'child' => [
+                [
+                    'name' => 'All Posts',
+                    'url' => '/admin/posts',
+                    'is' => 'admin/posts'
+                ],
+                [
+                    'name' => 'Create New Post',
+                    'url' => '/admin/posts/create',
+                    'is' => 'admin/posts/create'
+                ],
+            ],
+        ],
+        [
+            'header' => 'Advanced Section',
+            'icon' => 'tabler-adjustments-alt',
+        ],
+        [
+            'name' => 'Console',
+            'url' => '/admin/console',
+            'icon' => 'tabler-terminal-2',
+            'is' => 'admin/console*'
+        ],
+        [
+            'name' => 'Notifications',
+            'url' => '/admin/notifications',
+            'icon' => 'tabler-bell',
+            'is' => 'admin/notifications*',
+            'child' => [
+                [
+                    'name' => 'All Notifications',
+                    'url' => '/admin/notifications',
+                    'is' => 'admin/notifications'
+                ],
+                [
+                    'name' => 'Create New Notification',
+                    'url' => '/admin/notifications/create',
+                    'is' => 'admin/notifications/create'
+                ],
+            ],
+        ],
     ],
 ];

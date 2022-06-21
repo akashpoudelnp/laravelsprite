@@ -43,4 +43,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class);
+    }
+    public function getUnreadNotificationsAttribute()
+    {
+        return $this->notifications()->whereNull('read_at')->get();
+    }
 }

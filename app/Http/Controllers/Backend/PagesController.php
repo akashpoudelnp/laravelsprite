@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -21,5 +23,23 @@ class PagesController extends Controller
         $dashcards = collect($dashcards);
 
         return view('admin.index', compact('dashcards'));
+    }
+    public function console()
+    {
+        return view('admin.console.index');
+    }
+    public function consoleExecute(Request $request)
+    {
+        if (empty($request->command)) {
+            return "Please enter a command";
+        }
+        // remove spaces from start and end
+        $command = trim($request->command);
+        try {
+            Artisan::call($command);
+        } catch (Exception $e) {
+            return "Error: {$e->getMessage()}";
+        }
+        return Artisan::output();
     }
 }

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
@@ -47,7 +48,12 @@ class UserController extends Controller
 
         $user = User::create($data);
         $user->syncRoles($request->roles);
-        Mail::to($user)->send(new RegisteredUser($user, $new_password));
+        try {
+            Mail::to($user)->queue(new RegisteredUser($user, $new_password));
+        } catch (Exception $e) {
+            return redirect()->route('admin.users.index')
+                ->with('warning', 'User Created but cannot be mailed, Reason: mail server is unreachable');
+        }
         if ($request->save == 'rd')
             return redirect()->route('admin.users.index')
                 ->with('success', 'User Created Sucessfully');

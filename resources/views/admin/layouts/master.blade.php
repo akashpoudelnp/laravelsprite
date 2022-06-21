@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @yield('styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    @stack('css')
 </head>
 
 <body>
@@ -69,26 +70,48 @@
             @include('admin.layouts.footer')
         </div>
     </div>
-    @yield('scripts')
-    <script src="https://browser.sentry-cdn.com/5.27.6/bundle.tracing.min.js"
-        integrity="sha384-9Z8PxByVWP+gIm/rTMPn9BWwknuJR5oJcLj+Nr9mvzk8nJVkVXgQvlLGZ9SIFEJF" crossorigin="anonymous">
-    </script>
-    <script>
-        Sentry.init({
-            dsn: "https://8e4ad02f495946f888620f9fb99fd495@o484108.ingest.sentry.io/5536918",
-            release: "tabler@1.0.0-beta9",
-            integrations: [
-                new Sentry.Integrations.BrowserTracing()
-            ],
-
-            tracesSampleRate: 1.0,
-        });
-    </script>
-
-    <!-- Tabler Core -->
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="/js/tabler.min.js?1649661161" defer></script>
     <script src="/js/demo.min.js?1649661161" defer></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.basic-select2').select2({
+                placeholder: 'Please select an option'
+            });
+        });
+    </script>
+    <script>
+        $(".makeread").submit(function(e) {
+            console.log('Ajax initiated');
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+            var form = $(this);
+            var actionUrl = form.attr('action');
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data) {
+                    console.log('Done');
+                    $("#loading").hide();
+                    $("#mainButton").show();
+                    $("#notifications-user").load(" #notifications-user > *");
+                },
+                error: function(error) {
+                    alert('Error: ' + error);
+                }
+            });
+
+        });
+
+        $(document).ajaxStart(function() {
+            $("#loadingButton").show();
+            $("#mainButton").hide();
+        });
+    </script>
+    @stack('js')
 
 </body>
 

@@ -32,6 +32,8 @@ class UserSeeder extends Seeder
         $permission = Permission::create(['name' => 'can_crud_users']);
         $permission = Permission::create(['name' => 'can_crud_roles']);
         $permission = Permission::create(['name' => 'can_crud_permissions']);
+        $permission = Permission::create(['name' => 'can_crud_posts']);
+        $permission = Permission::create(['name' => 'can_console']);
 
         $role->givePermissionTo(Permission::all());
     }
