@@ -1,29 +1,41 @@
 @extends('auth.master')
 @section('title', 'Login')
 @section('content')
-    <form action="{{ route('login') }}" method="post" style="border-top-width: 26px;"
-        class="border-1 flex flex-col rounded-md border-teal-600 bg-white p-12 shadow-md">
-        <span class="mx-auto text-2xl text-gray-800"> Laravel <b>Sprite</b></span>
-        <h4 class="text-md my-4 text-center text-gray-700">Login</h4>
-
+    <form class="card card-md" method="POST" action="{{ route('login') }}" autocomplete="off">
         @csrf
-        <input type="email" class="my-1 rounded-md border-teal-600 form-input" name="email" type="text"
-            placeholder="Enter your email">
-        <small class="py-1 text-red-700">
-            @error('email')
-                {{ $message }}
-            @enderror
-        </small>
-        <input type="password" class="my-1 form-input rounded-md border-teal-600" name="password" type="text"
-            placeholder="Enter your password">
-        <small class="py-1 text-red-700">
-            @error('password')
-                {{ $message }}
-            @enderror
-        </small>
-
-        <button class="rounded-md bg-teal-700 p-1 text-white hover:bg-teal-500">Login</button>
-        <a class="pt-2 text-gray-500" href="{{ url('register') }}">Dont have an account? <u
-                class="text-teal-600">Register</u></a>
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Login to your account</h2>
+            <div class="mb-3">
+                <label class="form-label">Email address</label>
+                <input type="email" class="form-control @error('email') is-invalid @enderror " placeholder="Enter email"
+                    name="email" autocomplete="off" value="{{ old('email') }}">
+            </div>
+            <div class="mb-2">
+                <label class="form-label">
+                    Password
+                    <span class="form-label-description">
+                        <a href="#">I forgot password</a>
+                    </span>
+                </label>
+                <div class="input-group input-group-flat">
+                    <input type="password" name="password" class="form-control  @error('password') is-invalid @enderror"
+                        placeholder="Password" autocomplete="off">
+                    <span class="input-group-text">
+                        <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                            <x-icon name="tabler-eye" classes="icon" />
+                        </a>
+                    </span>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label class="form-check">
+                    <input type="checkbox" name="remember" class="form-check-input" />
+                    <span class="form-check-label">Remember me on this device</span>
+                </label>
+            </div>
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            </div>
+        </div>
     </form>
 @endsection

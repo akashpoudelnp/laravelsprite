@@ -5,17 +5,12 @@
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
             <a href="{{ config('adminpanel.dashboard_url') }}">
-
                 @if (config('adminpanel.logo_image'))
                     <img src="{{ config('adminpanel.logo_url') }}" width="110" height="32" alt="site-logo"
                         class="navbar-brand-image">
                 @else
                     <h3 class="">{{ config('adminpanel.app_name') }}</h3>
                 @endif
-
-
-
-
             </a>
         </h1>
         <div class="navbar-nav flex-row d-lg-none">

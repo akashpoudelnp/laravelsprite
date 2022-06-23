@@ -1,6 +1,6 @@
 <?php
 return [
-    'app_name' => 'AkDash Starter',
+    'app_name' => 'LaraDash',
     'dashboard_url' => '/admin',
     'logo_image' => true,
     'logo_url' => '/img/logo-dark.png',
@@ -70,20 +70,25 @@ return [
             ],
         ],
         [
-            'name' => 'Posts',
-            'url' => '/admin/posts',
-            'icon' => 'tabler-news',
-            'is' => 'admin/posts*',
+            'header' => 'Content Section',
+            'icon' => 'tabler-files',
+        ],
+
+        [
+            'name' => 'Pages',
+            'url' => '/admin/pages',
+            'icon' => 'tabler-notebook',
+            'is' => 'admin/pages*',
             'child' => [
                 [
-                    'name' => 'All Posts',
-                    'url' => '/admin/posts',
-                    'is' => 'admin/posts'
+                    'name' => 'All Pages',
+                    'url' => '/admin/pages',
+                    'is' => 'admin/pages'
                 ],
                 [
-                    'name' => 'Create New Post',
-                    'url' => '/admin/posts/create',
-                    'is' => 'admin/posts/create'
+                    'name' => 'Create New Page',
+                    'url' => '/admin/pages/create',
+                    'is' => '/admin/pages/create'
                 ],
             ],
         ],
